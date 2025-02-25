@@ -1,17 +1,18 @@
 const express = require('express'); 
 const mongoose = require('mongoose'); 
-const router = express.Router(); 
-const createError = require ('https-errors'); 
+const createError = require('http-errors');
+
 const users = require ('../controllers/users.controller'); 
 
+const router = express.Router(); 
+
 router.post('/users', /*storage.single("avatar"),*/users.create); 
-router.get('/users', users.list); 
 router.get('/users/me', auth.isAuthenticated, users.profile); 
 router.patch('/users/:id', auth.isAuthenticated, users.update); 
 //router.get('/users/:id/validate', users.validate);  ESTO NO SE QUE HACE
 
-router.post("/sessions", sessions.create); 
-router.delete("/sessions", auth.isAuthenticated, sessions.destroy);
+//router.post("/sessions", sessions.create); 
+//router.delete("/sessions", auth.isAuthenticated, sessions.destroy);
 
 router.use((error, req, res, next) => {
     if (

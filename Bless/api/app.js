@@ -1,9 +1,9 @@
-require('dotenv').config(); 
+require('dotenv').config();
+
 const express = require ('express'); 
 const logger = require ('morgan'); 
-const { cors } = require ("./config/")
 
-require ('./config/db.config'); 
+require("./config/db.config"); 
 
 const app = express (); 
 
@@ -14,7 +14,7 @@ app.use ((req, res, next) => {
     next (); 
 })
 
-const routes = require ('./config/db.config'); 
+const routes = require ('./config/routes.config'); 
 app.use ('/api/v1', routes); 
 
 const port = Number (process.env.PORT || 3000); 

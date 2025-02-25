@@ -1,5 +1,5 @@
 const mongoose = require("mongoose"); 
-const bcrypt = require ("bcriptjs"); 
+const bcrypt = require ("bcryptjs"); 
 const { isURL } = require ("../validators/string.validators");
 
 const EMAIL_PATTERN =  
@@ -78,3 +78,6 @@ const userSchema = new mongoose.Schema(
         },
     }
 );
+
+const User = mongoose.model('User', userSchema); 
+module.exports = User; 

@@ -3,7 +3,7 @@ const User = require('../models/user.model');
 
 module.exports.create = (req, res, next) => {
     const { email } = req.body;
-
+    console.log(User);
     User.findOne({ email })
         .then((user) => {
             if (user) {
@@ -16,6 +16,7 @@ module.exports.create = (req, res, next) => {
             return User.create({
                 email: req.body.email,
                 password: req.body.password,
+                apellidos: req.body.apellidos,
                 nombre: req.body.nombre,
                 fotoPerfil: req.file?.path,
             })
@@ -49,7 +50,7 @@ module.exports.update = (req, res, next) => {
         .catch(next);
 };
 
-module.exports.validate = (req, res, next) => {
+/*module.exports.validate = (req, res, next) => {
     User.findOne({ _id: req.params.id, activateToken: req.query.token })
         .then((user) => {
             if (user) {
@@ -64,4 +65,10 @@ module.exports.validate = (req, res, next) => {
 
 module.exports.profile = (req, res, next) => {
     res.json(req.user);
+};*/
+
+module.exports.list = (req, res, next) => {
+    User.find()
+        .then(users => res.json(users))
+        .catch(next);
 };
