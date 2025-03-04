@@ -1,10 +1,15 @@
 const mongoose = require("mongoose"); 
-const bcrypt = require ("bcryptjs"); 
 const { isURL } = require ("../validators/string.validators");
+const bcrypt = require ("bcryptjs"); 
 
+const SALT_WORK_FACTOR = 10; 
 const EMAIL_PATTERN =  
 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_PATTERN = /^.{8,}$/;
+
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '')
+  .split(',')
+  .map((email) => email.trim().toLowerCase());
 
 const userSchema = new mongoose.Schema(
     {
@@ -22,20 +27,15 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String, 
             trim: true, 
-            lowecase: true, 
+            lowercase: true, 
             unique: true, 
             required: [true, "El email es un campo obligatorio"], 
             match: [EMAIL_PATTERN, "El email no es válido"],
         },
         password: {
             type: String, 
-            required: [true, "La contraseña es un campo obligatorio"], 
-            match: [PASSWORD_PATTERN, "La contraseña tiene que tener al menos 8 caracteres"], 
-        }, 
-        role: {
-            type: String, 
-            enum: ['admin', 'guest'], 
-            default: 'guest'
+            required: [true, "La password es un campo obligatorio"], 
+            match: [PASSWORD_PATTERN, "La password tiene que tener al menos 8 caracteres"], 
         }, 
         active: {
             type: Boolean, 
@@ -60,8 +60,12 @@ const userSchema = new mongoose.Schema(
                     return "URL de foto de perfil inválido";
                 },
             },
+        }, 
+        role: {
+            type: String, 
+            enum: ['admin', 'guest'], 
+            default: 'guest'
         }
-    
     }, 
     {
         timestamps: true, 
@@ -78,6 +82,30 @@ const userSchema = new mongoose.Schema(
         },
     }
 );
+
+userSchema.pre("save", function (next) {
+
+    if (ADMIN_EMAILS.includes(this.email)) {
+      this.role = 'admin';
+    }
+  
+    if (this.isModified("password")) {
+      bcrypt
+        .hash(this.password, SALT_WORK_FACTOR)
+        .then((hash) => {
+          this.password = hash;
+          next();
+        })
+        .catch((error) => next(error));
+    } else {
+      next();
+    }
+});
+
+
+userSchema.methods.checkPassword = function (passwordToCheck) {
+  return bcrypt.compare(passwordToCheck, this.password);
+};
 
 const User = mongoose.model('User', userSchema); 
 module.exports = User; 

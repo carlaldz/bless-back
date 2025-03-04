@@ -3,28 +3,29 @@ const User = require('../models/user.model');
 
 module.exports.create = (req, res, next) => {
     const { email } = req.body;
-    console.log(User);
+  
     User.findOne({ email })
-        .then((user) => {
-            if (user) {
-                return next(createError(400, {
-                    message: "Este email ya está registrado",
-                    errors: { email: "Already exists" },
-                }));
-            }
-
-            return User.create({
-                email: req.body.email,
-                password: req.body.password,
-                apellidos: req.body.apellidos,
-                nombre: req.body.nombre,
-                fotoPerfil: req.file?.path,
+      .then((user) => {
+        if (user) {
+          next(
+            createError(400, {
+              message: "User email already taken",
+              errors: { email: "Already exists" },
             })
-            .then((user) => {
-                res.status(201).json(user);
-            });
-        })
-        .catch(next);
+          );
+        } else {
+          return User.create({
+            email: req.body.email,
+            password: req.body.password,
+            nombre: req.body.nombre,
+            apellidos: req.body.apellidos,
+            fotoPerfil: req.file?.path,
+          }).then((user) => {
+            res.status(201).json(user);
+          });
+        }
+      })
+      .catch((error) => next(error));
 };
 
 module.exports.update = (req, res, next) => {
@@ -50,14 +51,14 @@ module.exports.update = (req, res, next) => {
         .catch(next);
 };
 
-/*module.exports.validate = (req, res, next) => {
+module.exports.validate = (req, res, next) => {
     User.findOne({ _id: req.params.id, activateToken: req.query.token })
         .then((user) => {
             if (user) {
                 user.active = true;
-                return user.save().then((user) => res.json(user));
+                user.save().then((user) => res.json(user));
             } else {
-                return next(createError(404, "Usuario no encontrado"));
+                next(createError(404, "Usuario no encontrado"));
             }
         })
         .catch(next);
@@ -65,10 +66,5 @@ module.exports.update = (req, res, next) => {
 
 module.exports.profile = (req, res, next) => {
     res.json(req.user);
-};*/
-
-module.exports.list = (req, res, next) => {
-    User.find()
-        .then(users => res.json(users))
-        .catch(next);
 };
+

@@ -1,21 +1,29 @@
 require('dotenv').config();
-
-const express = require ('express'); 
-const logger = require ('morgan'); 
+const express = require("express");
+const logger = require("morgan");
+const { loadSession } = require ('./config/session.config'); 
+const { loadSessionUser } = require ('./middlewares/session.middleware'); 
+const { cors } = require('./config/cors.config'); 
 
 require("./config/db.config"); 
 
-const app = express (); 
+const app = express();
 
-app.use(express.json()); 
-app.use(logger('dev')); 
+//Middlewares
+
+app.use(cors); 
+app.use(express.json());
+app.use(logger("dev")); 
+app.use(loadSession); 
+app.use(loadSessionUser)
+
 app.use ((req, res, next) => {
     console.log ('Oki dokki'); 
     next (); 
 })
 
-const routes = require ('./config/routes.config'); 
-app.use ('/api/v1', routes); 
+const routes = require('./config/routes.config'); 
+app.use("/api/v1", routes);
 
 const port = Number (process.env.PORT || 3000); 
 app.listen (port, () => console.info(`Application running at port ${port}`)); 

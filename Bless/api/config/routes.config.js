@@ -1,18 +1,30 @@
 const express = require('express'); 
 const mongoose = require('mongoose'); 
-const createError = require('http-errors');
-
-const users = require ('../controllers/users.controller'); 
-
 const router = express.Router(); 
+const createError = require('http-errors');
+const events = require ('../controllers/events.controller');
+const users = require ('../controllers/users.controller');
+const sessions = require ('../controllers/sessions.controller');  
+const auth = require("../middlewares/session.middleware");
 
-router.post('/users', /*storage.single("avatar"),*/users.create); 
-router.get('/users/me', auth.isAuthenticated, users.profile); 
-router.patch('/users/:id', auth.isAuthenticated, users.update); 
-//router.get('/users/:id/validate', users.validate);  ESTO NO SE QUE HACE
 
-//router.post("/sessions", sessions.create); 
-//router.delete("/sessions", auth.isAuthenticated, sessions.destroy);
+router.post("/users", users.create); 
+router.get("/users/me", auth.isAuthenticated, users.profile); 
+router.patch("/users/me", auth.isAuthenticated, users.update); 
+router.get("/users/:id/validate", users.validate); 
+
+router.post("/sessions", sessions.create); 
+router.delete("/sessions", auth.isAuthenticated, sessions.destroy);
+
+router.get("/eventos", events.list);
+router.post("/eventos", auth.isAuthenticated, auth.isAdmin, events.create);
+router.get("/eventos/:id", events.detail); 
+router.delete("/eventos/:id", auth.isAuthenticated, auth.isAdmin, events.delete);
+router.patch("/eventos/:id", auth.isAuthenticated, auth.isAdmin, events.update); 
+
+router.use((req, res, next) => {
+    next(createError(404, "Route not found"));
+});
 
 router.use((error, req, res, next) => {
     if (
@@ -35,6 +47,6 @@ router.use((error, req, res, next) => {
         }, {});
     }
     res.status(error.status).json(data); 
-})
+});
 
 module.exports = router; 
