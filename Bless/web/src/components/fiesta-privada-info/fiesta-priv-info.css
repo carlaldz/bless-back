@@ -1,0 +1,99 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap&text=italic');
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+
+.fiesta-priv {
+    color: white !important; /* Títulos en blanco, con !important para asegurarse de que no se sobrescriban */
+    text-align: center;
+}
+
+.fiesta-priv h2{
+    color: #0cc0df !important;
+    margin-top: 40px !important;
+}
+
+.bubbles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espacio entre los elementos */
+    justify-content: space-around; /* Alineación de los elementos */
+    align-items: center;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: black;
+    font-family: 'Montserrat' !important;
+}
+
+/* Estilos para cada party-type */
+.party-type {
+    
+    width: calc(33.33% - 20px); /* Ancho de cada elemento, tres por fila */
+    background-color: black; /* Fondo blanco para cada fiesta */
+    padding: 20px;
+    border-radius: 30px; /* Bordes redondeados */
+    border: 2px solid #ff0000; /* Borde rojo fino */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    text-align: center;
+    min-height: 250px; /* Altura mínima para cada cuadro */
+    transition: transform 0.3s ease-in-out; /* Animación de hover */
+}
+
+.party-type:hover {
+    transform: translateY(-10px); /* Efecto de elevación al pasar el ratón */
+}
+
+.party-type h3 {
+    font-family: 'Bebas Neue' !important;
+    color: white; 
+    font-size: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 
+        0 0 5px #ff0000,   /* Sombra externa (color rojo) */
+        0 0 10px #ff0000,  /* Mayor intensidad de sombra */
+        0 0 20px #ff0000,  /* Más difusa */
+        0 0 40px #ff0000,  /* Sombra aún más difusa */
+        0 0 80px #ff0000,  /* Efecto brillante */
+        0 0 90px #ff0000,  /* Sombra grande */
+        0 0 100px #ff0000; /* Sombra aún más grande */
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    z-index: 1000;
+}
+
+.party-type p {
+    font-family: 'Montserrat' !important;
+    font-size: 1rem;
+    color: white;
+}
+
+.party-type ion-icon {
+    font-size: 2rem;
+    color: white; /* Color de los iconos */
+    margin-top: 0;
+    margin-right: 16px;
+    filter: drop-shadow(0 0 3px #ff0000)   /* Sombra externa (más pequeña) */
+            drop-shadow(0 0 5px #ff0000)   /* Sombra más suave */
+            drop-shadow(0 0 10px #ff0000)  /* Sombra difusa */
+            drop-shadow(0 0 20px #ff0000); /* Efecto brillante sin mucho desplazamiento */
+}
+
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .party-type {
+      width: calc(50% - 20px); /* Dos por fila en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    .party-type {
+      width: 100%; /* Un solo elemento por fila en pantallas muy pequeñas */
+    }
+}

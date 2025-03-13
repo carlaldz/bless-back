@@ -6,18 +6,21 @@ const events = require ('../controllers/events.controller');
 const users = require ('../controllers/users.controller');
 const sessions = require ('../controllers/sessions.controller');  
 const auth = require("../middlewares/session.middleware");
+const storage = require("../config/cloudinary.config");
+const dayjs = require ("../config/dayjs.config"); 
+const multer = require('multer');
+const upload = multer(); 
 
-
-router.post("/users", users.create); 
-router.get("/users/me", auth.isAuthenticated, users.profile); 
-router.patch("/users/me", auth.isAuthenticated, users.update); 
+router.post("/users", upload.none(), users.create);
+router.get("/users/me", auth.isAuthenticated, users.profile);
+router.patch("/users/me", auth.isAuthenticated, users.update);
 router.get("/users/:id/validate", users.validate); 
 
 router.post("/sessions", sessions.create); 
 router.delete("/sessions", auth.isAuthenticated, sessions.destroy);
 
 router.get("/eventos", events.list);
-router.post("/eventos", auth.isAuthenticated, auth.isAdmin, events.create);
+router.post("/eventos", /*auth.isAuthenticated, auth.isAdmin,*/ storage.single("cartel"), events.create);
 router.get("/eventos/:id", events.detail); 
 router.delete("/eventos/:id", auth.isAuthenticated, auth.isAdmin, events.delete);
 router.patch("/eventos/:id", auth.isAuthenticated, auth.isAdmin, events.update); 

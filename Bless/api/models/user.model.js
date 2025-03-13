@@ -51,16 +51,7 @@ const userSchema = new mongoose.Schema(
                 );
             },
         },
-        fotoPerfil: {
-            type: String, 
-            //default: 
-            validate: {
-                validator: isURL, 
-                message: function () {
-                    return "URL de foto de perfil inválido";
-                },
-            },
-        }, 
+       
         role: {
             type: String, 
             enum: ['admin', 'guest'], 

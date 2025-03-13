@@ -1,6 +1,8 @@
 const createError = require ("http-errors"); 
 const Event = require ("../models/event.model");
 const { model } = require("mongoose");
+const dayjs = require ("../config/dayjs.config"); 
+const DATE_FORMAT = "DD/MM/YYYY";
 
 module.exports.list = (req, res, next) => {
     const { limit = 5, 
@@ -28,20 +30,28 @@ module.exports.list = (req, res, next) => {
 }; 
 
 module.exports.create = (req, res, next) => {
-    const event = req.body; 
-    
+    const { fecha } = req.body;
+
+    if (!fecha || !dayjs(fecha, DATE_FORMAT, true).isValid()) {
+        return next(createError(400, "Formato de fecha inválido"));
+    }
+
+    const event = { ...req.body, fecha: dayjs(fecha, DATE_FORMAT, true).toDate() };
+
     Event.create(event)
         .then((event) => res.status(201).json(event))
-        .catch((error) => next(error)); 
-}; 
+        .catch((error) => next(error));
+};
+
+ 
 
 module.exports.detail = (req, res, next) => {
     const { id } = req.params; 
 
     Event.findById(id)
         .then((events) => {
-            if (!event) next(createError(404, "Evento no encontrado")); 
-            else res.json(event); 
+            if (!events) next(createError(404, "Evento no encontrado")); 
+            else res.json(events); 
         })
         .catch((error) => next (error)); 
 }; 
@@ -50,7 +60,7 @@ module.exports.delete = (req, res, next) => {
     const { id } = req.params; 
     Event.findByIdAndDelete(id)
         .then((event) => {
-            if (!event) next(createError(404, "Evento no encontrado" ));
+            if (!event) return next(createError(404, "Evento no encontrado" ));
             else res.status(204).send(); 
         })
         .catch((error) => next (error));

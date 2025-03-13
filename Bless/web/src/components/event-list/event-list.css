@@ -1,0 +1,10 @@
+.event-list{
+    width: 100%;
+}
+
+.event-divider {
+    width: 100%; /* Ajusta el ancho de la línea */
+    border: none;
+    border-top: 2px solid black; /* Línea negra fina */
+    margin: 20px auto; /* Espacio entre eventos */
+}

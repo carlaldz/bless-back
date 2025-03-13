@@ -1,0 +1,27 @@
+.moving-text-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
+  background-color: black; /* Opcional */
+  color: white; /* Opcional */
+  padding: 10px 0;
+}
+
+.moving-text {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 2rem; /* Ajusta el tamaño */
+  font-weight: bold;
+  text-transform: uppercase;
+  animation: moveText 20s linear infinite;
+}
+
+@keyframes moveText {
+  from {
+      transform: translateX(0%);
+  }
+  to {
+      transform: translateX(-50%);
+  }
+}

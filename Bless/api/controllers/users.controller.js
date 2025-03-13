@@ -2,7 +2,7 @@ const createError = require('http-errors');
 const User = require('../models/user.model');
 
 module.exports.create = (req, res, next) => {
-    const { email } = req.body;
+    const { email } = req.body.email;
   
     User.findOne({ email })
       .then((user) => {
@@ -18,8 +18,7 @@ module.exports.create = (req, res, next) => {
             email: req.body.email,
             password: req.body.password,
             nombre: req.body.nombre,
-            apellidos: req.body.apellidos,
-            fotoPerfil: req.file?.path,
+            apellidos: req.body.apellidos
           }).then((user) => {
             res.status(201).json(user);
           });
@@ -33,7 +32,7 @@ module.exports.update = (req, res, next) => {
         email: req.body.email,
         password: req.body.password,
         nombre: req.body.nombre,
-        fotoPerfil: req.body.fotoPerfil,
+
     };
 
     // Remove undefined keys
