@@ -5,6 +5,7 @@ import { useAuthContext } from "../../contexts/auth-context";
 const Navbar = () => {
     
     const { user } = useAuthContext();
+    console.log("Valor del contexto de autenticación:", user);
 
     return (
       <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
@@ -27,8 +28,8 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-white" to="/eventos-privados">
-                  Eventos privados
+                <Link className="nav-link text-white" to="/calendario">
+                  Calendario
                 </Link>
               </li>
               <li className="nav-item">
@@ -36,11 +37,7 @@ const Navbar = () => {
                   Album
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link text-white" to="/contacto">
-                  Contacto
-                </Link>
-              </li>
+              
               <li className="nav-item">
                 <Link className="nav-link text-white" to="https://www.fourvenues.com/en/bless-the-club-1">
                   Entradas
@@ -52,8 +49,9 @@ const Navbar = () => {
           <div className = "login-icon">
           <Link to="/login">
           <ion-icon
-            name="person-circle-outline"
-            className={user ? 'logged-in' : ''}
+              name="person-circle-outline"
+              className={user ? 'logged-in' : ''}
+              style={{ color: user ? '#0cc0df' : 'white' }}
           ></ion-icon>
           </Link>
           </div>

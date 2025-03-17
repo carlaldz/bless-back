@@ -7,6 +7,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import "./App.css"
 import Login from './pages/login';
 import { AuthProvider } from './contexts/auth-context';
+import Calendario from './pages/calendario';
+import Album from "./pages/album"
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
     <WhatsappButton/>
     <Routes>
     <Route path="/" element={<Home />} />
+    <Route path="/calendario" element={<Calendario/>} />
+    <Route path="/album" element={<Album/>}/>
     <Route path="/login" element={<Login/>}/>
   </Routes>
   </AuthProvider>

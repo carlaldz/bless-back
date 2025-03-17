@@ -1,16 +1,5 @@
 [
-    {
-        "id": 1,
-        "titulo": "Noche de chupitos ",
-        "descripción": "Una noche llena de música y diversión.",
-        "fecha": "14/03/2025",
-        "edad": 18,
-        "horario": "00:00 - 06:00",
-        "DJ": "DJ Alex",
-        "dressCode": "Casual",
-        "musica": "Dembow / Reggaeton / Comercial / Old School / Clásicos",
-        "cartel": "https://res.cloudinary.com/dbfdph0aj/video/upload/v1742160309/Fourveneus_iqy1sl.mp4"
-    },
+
     {
         "id": 2,
         "titulo": "Fiesta del Viernes",
@@ -21,7 +10,7 @@
         "DJ": "DJ Maria",
         "dressCode": "Casual",
         "musica": "Dembow / Reggaeton / Comercial / Old School / Clásicos",
-        "cartel": "https://res.cloudinary.com/dbfdph0aj/image/upload/v1742160299/3_ce2bdl.jpg"
+        "cartel": "https://res.cloudinary.com/dbfdph0aj/image/upload/v1742218773/3_rgmrue.jpg"
     },
     {   
         "id": 3,
@@ -33,7 +22,7 @@
         "DJ": "DJ Carlos",
         "dressCode": "Casual",
         "musica": "Dembow / Reggaeton / Comercial / Old School / Clásicos",
-        "cartel": "https://res.cloudinary.com/dbfdph0aj/image/upload/v1742160299/2_zrcrjx.jpg"
+        "cartel": "https://res.cloudinary.com/dbfdph0aj/image/upload/v1742218773/2_t4hgdl.jpg"
     },
     {
         "id": 4,
@@ -45,7 +34,7 @@
         "DJ": "DJ Laura",
         "dressCode": "Casual",
         "musica": "Dembow / Reggaeton / Comercial / Old School / Clásicos",
-        "cartel": "https://res.cloudinary.com/dbfdph0aj/image/upload/v1742160299/5_ilfsok.jpg"
+        "cartel": "https://res.cloudinary.com/dbfdph0aj/image/upload/v1742218773/5_nulmjq.jpg"
     },
     {   
         "id": 5,
@@ -57,6 +46,6 @@
         "DJ": "DJ Pedro",
         "dressCode": "Casual",
         "musica": "Dembow / Reggaeton / Comercial / Old School / Clásicos",
-        "cartel": "https://res.cloudinary.com/dbfdph0aj/image/upload/v1742160299/4_hygu2h.jpg"
+        "cartel": "https://res.cloudinary.com/dbfdph0aj/image/upload/v1742218773/4_ql0dbx.jpg"
     }
 ]

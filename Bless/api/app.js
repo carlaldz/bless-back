@@ -27,3 +27,31 @@ app.use("/api/v1", routes);
 
 const port = Number (process.env.PORT || 3000); 
 app.listen (port, () => console.info(`Application running at port ${port}`)); 
+
+app.get('/api/images', async (req, res) => {
+    try {
+        const cloudName = process.env.CLOUD_NAME;
+        const apiKey = process.env.API_KEY;
+        const apiSecret = process.env.API_SECRET;
+        const folderName = process.env.FOLDER_NAME;
+        const response = await axios.get(
+            `https://api.cloudinary.com/v1_1/${cloudName}/resources/image`,
+            {
+                params: {
+                    type: 'upload',
+                    prefix: folderName,
+                    max_results: 100,
+                },
+                auth: {
+                    username: apiKey,
+                    password: apiSecret,
+                },
+            }
+        );
+
+        res.json(response.data.resources);
+        } catch (error) {
+            console.error('Error fetching images:', error);
+            res.status(500).json({ error: 'Failed to fetch images' });
+        }
+});

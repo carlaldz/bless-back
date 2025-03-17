@@ -8,11 +8,16 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     BlessApi.profile()
-      .then((data) => setUser(data))
+      .then((data) => {
+        console.log("Datos recibidos de la API:", data);
+        setUser(data);
+      })
+
       .catch(() => setUser(null));
   }, []);
 
   function login(user) {
+    console.log("Usuario tras login:", user);
     setUser(user);
   }
 

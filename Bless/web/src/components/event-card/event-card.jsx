@@ -15,7 +15,7 @@ function EventCard ( { evento }) {
             <div className="imagen">
             
             <img 
-                src={evento.cartelURL} 
+                src={evento.cartel} 
                 alt={evento.titulo} 
             />
             </div>

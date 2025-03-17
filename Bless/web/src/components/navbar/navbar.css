@@ -83,9 +83,12 @@
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.login-icon ion-icon.logged-in {
-    color: #0cc0df; 
+.navbar .login-icon ion-icon.logged-in {
+    color: #0cc0df !important;
+    --ionicon-stroke: #0cc0df !important;
 }
+
+
 
 .login-icon :hover{
     transform: scale(1.1);

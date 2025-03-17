@@ -1,6 +1,6 @@
 
 import Carousel from "../components/carousel/carousel";
-import EventList from "../components/event-list/event-list";
+import EventListFake from "../components/event-list/event-list-fake";
 import FiestaPrivInfo from "../components/fiesta-privada-info/fiesta-priv-info";
 import Footer from "../components/footer/footer";
 import Map from "../components/map/map";
@@ -17,7 +17,7 @@ const Home = () => {
                 <MovingText/>
             </div>
             <div className="event-card"> 
-                <EventList/> 
+                <EventListFake/> 
             </div>
             <div className= "private-events">
                 <FiestaPrivInfo/>

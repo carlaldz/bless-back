@@ -33,6 +33,7 @@ const LoginForm = () => {
   };
 
   return (
+     
     <form onSubmit={handleSubmit}>
       <h2>Inicia Sesión:</h2>
       <input
@@ -44,14 +45,16 @@ const LoginForm = () => {
       />
       <input
         type="password"
-        placeholder="Password"
+        placeholder="****"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
+      
       <button type="submit">Login</button>
       {error && <p className="error">{error}</p>} {/* Mostrar el error si existe */}
     </form>
+    
   );
 };
 

@@ -2,7 +2,7 @@ const createError = require('http-errors');
 const User = require('../models/user.model');
 
 module.exports.create = (req, res, next) => {
-    const { email } = req.body.email;
+    const { email } = req.body;
   
     User.findOne({ email })
       .then((user) => {

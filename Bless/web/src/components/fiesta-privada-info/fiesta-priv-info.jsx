@@ -14,7 +14,7 @@ const FiestaPrivInfo = () => {
 
         <div className="party-type">
           <h3><ion-icon name="school-outline"></ion-icon> Graduaciones</h3>
-          <p>Tu graduación merece ser celebrada a lo grande. Ya sea de la ESO, Bachillerato o Universidad, ofrecemos un ambiente festivo y lleno de energía, perfecto para marcar el final de una etapa y empezar con fuerza la siguiente. Vive este momento con la mejor música y el ambiente que te mereces.</p>
+          <p>Tu graduación merece ser celebrada a lo grande. Ya sea de la ESO, Bachillerato o Universidad, ofrecemos un ambiente lleno de energía, perfecto para marcar el final de una etapa y empezar con fuerza la siguiente. Vive este momento con la mejor música.</p>
         </div>
 
         <div className="party-type">

@@ -23,23 +23,28 @@ function RegisterForm() {
     try {
       await BlessApi.register(formData);
       const data = await BlessApi.login(user);
-
+  
       login(data);
       setSuccessMessage("Usuario creado correctamente");
       navigate("/");
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
-          const { errors } = error.response.data;
-          Object.keys(errors).forEach((inputName) => 
-            setError(inputName, { message: errors[inputName] })
-          );
+      if (error.response && error.response.data && error.response.data.errors) {
+        const serverErrors = error.response.data.errors;
+        if (serverErrors.email) {
+          // Si existe un error en email, establecemos el mensaje "Email ya registrado"
+          setError("email", { message: "Email ya registrado" });
         } else {
+          // Para otros errores, recorremos y asignamos el mensaje que venga del servidor
+          Object.keys(serverErrors).forEach((inputName) =>
+            setError(inputName, { message: serverErrors[inputName] })
+          );
+        }
+      } else {
           console.error("Error inesperado:", error);
-          // Aquí podrías setear un error general en el formulario o mostrar un mensaje genérico
+          // Aquí podrías establecer un error general en el formulario o mostrar un mensaje genérico
         }
       }
-      
-  };
+    };
 
   return (
     <form onSubmit={handleSubmit(handleRegister)}>
@@ -50,6 +55,7 @@ function RegisterForm() {
         className={`form-control ${errors.nombre ? "is-invalid" : ""}`}
         placeholder="Introduce tu nombre"
         {...register("nombre", { required: "Campo obligatorio" })}
+        style={{ width: "85%" }}
         required
       />
       {errors.nombre && <p className="error">{errors.nombre.message}</p>}
@@ -59,6 +65,7 @@ function RegisterForm() {
         className={`form-control ${errors.apellidos ? "is-invalid" : ""}`}
         placeholder="Introduce tus apellidos"
         {...register("apellidos", { required: "Campo obligatorio" })}
+        style={{ width: "85%" }}
         required
       />
       {errors.apellidos && <p className="error">{errors.apellidos.message}</p>}
@@ -72,9 +79,6 @@ function RegisterForm() {
       />
       {errors.email && <p className="error">{errors.email.message}</p>}
 
-      <span className="input-group-text">
-        <i className="fa fa-lock fa-fw"></i>
-      </span>
       <input
         type="password"
         className={`form-control ${errors.password ? "is-invalid" : ""}`}
