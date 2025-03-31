@@ -1,57 +1,79 @@
 require('dotenv').config();
 const express = require("express");
 const logger = require("morgan");
-const { loadSession } = require ('./config/session.config'); 
-const { loadSessionUser } = require ('./middlewares/session.middleware'); 
-const { cors } = require('./config/cors.config'); 
+const session = require("express-session");
+const cors = require("cors"); 
 
-require("./config/db.config"); 
+require("./config/db.config");
 
 const app = express();
 
-//Middlewares
-
-app.use(cors); 
+app.use(logger("dev"));
 app.use(express.json());
-app.use(logger("dev")); 
-app.use(loadSession); 
-app.use(loadSessionUser)
+app.use(express.urlencoded({ extended: true }));
 
-app.use ((req, res, next) => {
-    console.log ('Oki dokki'); 
-    next (); 
-})
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "https://blesstheclub.netlify.app",
+      "http://localhost:3000",          
+      "http://localhost:5173",            
+      process.env.FRONTEND_URL,            
+    ];
+    
+    if (!origin) return callback(null, true);
+    
 
-const routes = require('./config/routes.config'); 
+    if (allowedOrigins.some(allowedOrigin => 
+      origin === allowedOrigin || 
+      origin.includes(allowedOrigin.replace(/^https?:\/\//, ''))
+     )) {
+      return callback(null, true);
+    }
+    
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'Access-Control-Request-Method',
+    'Access-Control-Request-Headers'
+  ],
+  optionsSuccessStatus: 200 
+};
+
+app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions));
+app.use(session({
+  secret: process.env.SESSION_SECRET || "super-secreto",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}));
+
+const { loadSessionUser } = require('./middlewares/session.middleware');
+app.use(loadSessionUser);
+
+const routes = require('./config/routes.config');
 app.use("/api/v1", routes);
 
-const port = Number (process.env.PORT || 3000); 
-app.listen (port, () => console.info(`Application running at port ${port}`)); 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Error interno del servidor' });
+});
 
-app.get('/api/images', async (req, res) => {
-    try {
-        const cloudName = process.env.CLOUD_NAME;
-        const apiKey = process.env.API_KEY;
-        const apiSecret = process.env.API_SECRET;
-        const folderName = process.env.FOLDER_NAME;
-        const response = await axios.get(
-            `https://api.cloudinary.com/v1_1/${cloudName}/resources/image`,
-            {
-                params: {
-                    type: 'upload',
-                    prefix: folderName,
-                    max_results: 100,
-                },
-                auth: {
-                    username: apiKey,
-                    password: apiSecret,
-                },
-            }
-        );
-
-        res.json(response.data.resources);
-        } catch (error) {
-            console.error('Error fetching images:', error);
-            res.status(500).json({ error: 'Failed to fetch images' });
-        }
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
 });

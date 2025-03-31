@@ -10,20 +10,24 @@ const storage = require("../config/cloudinary.config");
 const dayjs = require ("../config/dayjs.config"); 
 const multer = require('multer');
 const upload = multer(); 
+ 
 
-router.post("/users", upload.none(), users.create);
-router.get("/users/me", auth.isAuthenticated, users.profile);
-router.patch("/users/me", auth.isAuthenticated, users.update);
-router.get("/users/:id/validate", users.validate); 
+router.get("/api/v1/status", (req, res) => {
+    res.json({ message: "API v1 working" }); 
+});
+
+router.post("/users", express.json(), users.create);
+router.get("/users/:id", auth.isAuthenticated, users.profile);
+router.patch("/users/:id", auth.isAuthenticated, users.update);
 
 router.post("/sessions", sessions.create); 
 router.delete("/sessions", auth.isAuthenticated, sessions.destroy);
-
-router.get("/eventos", events.list);
-router.post("/eventos", /*auth.isAuthenticated, auth.isAdmin,*/ storage.single("cartel"), events.create);
-router.get("/eventos/:id", events.detail); 
-router.delete("/eventos/:id", auth.isAuthenticated, auth.isAdmin, events.delete);
-router.patch("/eventos/:id", auth.isAuthenticated, auth.isAdmin, events.update); 
+router.post('/login', sessions.create);
+router.get("/events", events.list);
+router.post("/events", auth.isAuthenticated, auth.isAdmin, storage.single("cartel"), events.create);
+router.get("/events/:id", events.detail); 
+router.delete("/events/:id", auth.isAuthenticated, auth.isAdmin, events.delete);
+router.patch("/events/:id", auth.isAuthenticated, auth.isAdmin, events.update); 
 
 router.use((req, res, next) => {
     next(createError(404, "Route not found"));

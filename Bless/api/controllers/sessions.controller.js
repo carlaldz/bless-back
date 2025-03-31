@@ -6,32 +6,36 @@ module.exports.create = (req, res, next) => {
   
     User.findOne({ email })
       .then((user) => {
-        if (user) {
-          user
-            .checkPassword(password)
-            .then((match) => {
-              if (match) {
-                req.session.userId = user.id;
-                res.status(201).json(user);
-              } else {
-                next(createError(401, {
-                  message: "Credenciales incorrectos",
-                  errors: { email: "Email o password incorrectos" },
-                }))
-              }
-            })
-            .catch(next);
-        } else {
-          next(createError(401, {
-            message: "Credenciales incorrectos",
-            errors: { email: "Email o password incorrectos" },
-          }))
+        if (!user) {
+          return next(createError(401, {
+            errors: { credentials: "Email o contraseña incorrectos" }
+          }));
         }
-      }).catch(next);
-  };
+
+        return user.checkPassword(password)
+          .then((match) => {
+            if (!match) {
+              throw createError(401, {
+                errors: { credentials: "Email o contraseña incorrectos" }
+              });
+            }
+
+            req.session.userId = user.id;
+             
+            res.status(201).json({
+              id: user.id,
+              nombre: user.nombre,
+              email: user.email,
+              role: user.role
+            });
+          });
+      })
+      .catch(next);
+};
 
 module.exports.destroy = (req, res, next) => {
     req.session.destroy(() => {
+        res.clearCookie("connect.sid"); 
         res.status(204).send();
     });
 };
