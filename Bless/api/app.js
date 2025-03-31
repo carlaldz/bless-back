@@ -13,43 +13,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      "https://blesstheclub.netlify.app",
-      "http://localhost:3000",          
-      "http://localhost:5173",            
-      process.env.FRONTEND_URL,            
-    ];
-    
-    if (!origin) return callback(null, true);
-    
-
-    if (allowedOrigins.some(allowedOrigin => 
-      origin === allowedOrigin || 
-      origin.includes(allowedOrigin.replace(/^https?:\/\//, ''))
-     )) {
-      return callback(null, true);
-    }
-    
-    callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type', 
-    'Authorization', 
-    'X-Requested-With',
-    'Accept',
-    'Origin',
-    'Access-Control-Request-Method',
-    'Access-Control-Request-Headers'
+  origin: [
+    'http://localhost:5173', // Tu frontend local
+    'https://blesstheclub.netlify.app' // Tu producción
   ],
-  optionsSuccessStatus: 200 
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 };
 
 app.use(cors(corsOptions));
-
 app.options('*', cors(corsOptions));
+
+
 app.use(session({
   secret: process.env.SESSION_SECRET || "super-secreto",
   resave: false,
